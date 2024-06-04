@@ -1,0 +1,84 @@
+package Part4_4;
+
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
+import javax.swing.JPanel;
+import javax.swing.border.EmptyBorder;
+
+import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class BankTransferUI extends JFrame {
+    private JTable table;
+    private DefaultTableModel tableModel;
+    private BankAccount accountFrom;
+    private BankAccount accountTo;
+    private TransferThread transferThread;
+
+    public static void main(String[] args) {
+        EventQueue.invokeLater(() -> {
+            try {
+                BankTransferUI frame = new BankTransferUI();
+                frame.setVisible(true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    public BankTransferUI() {
+        setTitle("Bank Transfer");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setBounds(100, 100, 600, 400);
+        getContentPane().setLayout(null);
+
+        JButton btnStart = new JButton("Start");
+        btnStart.setBounds(150, 300, 100, 30);
+        getContentPane().add(btnStart);
+
+        JButton btnStop = new JButton("Stop");
+        btnStop.setBounds(300, 300, 100, 30);
+        getContentPane().add(btnStop);
+
+        JScrollPane scrollPane = new JScrollPane();
+        scrollPane.setBounds(50, 50, 500, 200);
+        getContentPane().add(scrollPane);
+
+        tableModel = new DefaultTableModel(
+                new Object[][]{},
+                new String[]{"Thread Name", "Số tiền chuyển", "Chuyển từ tài khoản", "Chuyển tới tài khoản", "Tổng tiền thực hiện"}
+        );
+        table = new JTable(tableModel);
+        scrollPane.setViewportView(table);
+
+        accountFrom = new BankAccount();
+        accountTo = new BankAccount();
+
+        btnStart.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                startTransfer();
+            }
+        });
+
+        btnStop.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                stopTransfer();
+            }
+        });
+    }
+
+    protected void startTransfer() {
+        transferThread = new TransferThread(accountFrom, accountTo, tableModel);
+        transferThread.start();
+    }
+
+    protected void stopTransfer() {
+        if (transferThread != null) {
+            transferThread.interrupt();
+        }
+    }
+}

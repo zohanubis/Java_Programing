@@ -1,0 +1,44 @@
+package com.example.conference.controller;
+
+import com.example.conference.dto.PaperSubmissionDto;
+import com.example.conference.model.Paper;
+import com.example.conference.service.PaperService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
+@RestController
+@RequestMapping("/api/papers")
+public class PaperController {
+    @Autowired
+    private PaperService paperService;
+
+    @GetMapping
+    public List<Paper> getAllPapers() {
+        return paperService.getAllPapers();
+    }
+
+    @PostMapping
+    public Paper submitPaper(@RequestBody PaperSubmissionDto paperSubmissionDto) {
+        Paper paper = new Paper();
+        // Map fields from DTO to entity
+        paper.setTitle(paperSubmissionDto.getTitle());
+        paper.setField(paperSubmissionDto.getField());
+        paper.setContactAuthor(paperSubmissionDto.getContactAuthor());
+        paper.setAbstractText(paperSubmissionDto.getAbstractText());
+        paper.setKeywords(paperSubmissionDto.getKeywords());
+        // Note: You'll need to handle the mapping for authors list as well
+        return paperService.savePaper(paper);
+    }
+
+    @GetMapping("/{id}")
+    public Paper getPaperById(@PathVariable Long id) {
+        return paperService.getPaperById(id);
+    }
+
+    @DeleteMapping("/{id}")
+    public void deletePaper(@PathVariable Long id) {
+        paperService.deletePaper(id);
+    }
+}
