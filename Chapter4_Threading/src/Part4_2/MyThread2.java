@@ -2,7 +2,7 @@ package Part4_2;
 
 public class MyThread2 {
 
-    // Thread1 sẽ in ra các số chẵn từ 1 đến 10
+    
     static class EvenThread extends Thread {
         @Override
         public void run() {
@@ -14,7 +14,7 @@ public class MyThread2 {
         }
     }
 
-    // Thread2 sẽ in ra các số lẻ từ 1 đến 10
+    
     static class OddThread extends Thread {
         @Override
         public void run() {
@@ -27,11 +27,11 @@ public class MyThread2 {
     }
 
     public static void main(String[] args) {
-        // Tạo thread1 và thread2
+        
         Thread thread1 = new EvenThread();
         Thread thread2 = new OddThread();
 
-        // Bắt đầu thread1 và chờ cho đến khi hoàn thành
+        
         thread1.start();
         try {
             thread1.join();

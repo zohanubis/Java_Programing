@@ -1,5 +1,0 @@
-package com.example.conference.dto;
-
-public class PaperSubmissionDto {
-
-}
